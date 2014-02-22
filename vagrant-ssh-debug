@@ -1,0 +1,11 @@
+#!/bin/bash
+# Try to find web root in puphpet config
+webroot="/var/www"
+if [ -f "puphpet/config.yaml" ]; then
+	webrootPuphpet=$(cat puphpet/config.yaml|grep -E "target: /.+?"|cut -d ":" -f 2|cut -d " " -f 2-|grep -oE -m1 "^/.+")
+	if [ "$webrootPuphpet" != "" ]; then
+		webroot="$webrootPuphpet"
+	fi
+fi
+
+vagrant ssh -c "export XDEBUG_CONFIG=\"phpstorm=awd\" && export PHP_IDE_CONFIG=\"serverName=local.coinhedge.com\" && cd $webroot && $*" -- -q
