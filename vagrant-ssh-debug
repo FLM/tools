@@ -6,6 +6,7 @@ if [ -f "puphpet/config.yaml" ]; then
 	if [ "$webrootPuphpet" != "" ]; then
 		webroot="$webrootPuphpet"
 	fi
+	serverName=$(cat puphpet/config.yaml|grep servername|cut -d ":" -f 2|cut -d " " -f 2-)
 fi
 
-vagrant ssh -c "export XDEBUG_CONFIG=\"phpstorm=awd\" && export PHP_IDE_CONFIG=\"serverName=local.coinhedge.com\" && cd $webroot && $*" -- -q
+vagrant ssh -c "export XDEBUG_CONFIG=\"phpstorm=awd\" && export PHP_IDE_CONFIG=\"serverName=$serverName\" && cd $webroot && $*" -- -q
